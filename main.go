@@ -15,9 +15,10 @@ func main() {
 	zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	zerolog.ErrorStackMarshaler = pkgerrors.MarshalStack
 
+	host := "localhost"
 	port := 50051
 	log.Info().Msgf("listening on %d", port)
-	listener, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", port))
+	listener, err := net.Listen("tcp", fmt.Sprintf("%s:%d", host, port))
 	if err != nil {
 		log.Panic().Err(err).Msg("failed to listen")
 	}
