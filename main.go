@@ -6,6 +6,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/rs/zerolog/pkgerrors"
 	"grpc-test/server"
+	"grpc-test/util"
 	"net"
 	"os"
 	"os/signal"
@@ -14,11 +15,15 @@ import (
 func main() {
 	zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	zerolog.ErrorStackMarshaler = pkgerrors.MarshalStack
+	config, err := util.LoadConfig(".")
+	if err != nil {
+		log.Panic().Err(err).Msg("error loading config")
+	}
 
-	host := "localhost"
-	port := 50051
-	log.Info().Msgf("listening on %d", port)
-	listener, err := net.Listen("tcp", fmt.Sprintf("%s:%d", host, port))
+	// host := "localhost"
+	// port := 50051
+	log.Info().Msgf("listening on %d", config.ListenPort)
+	listener, err := net.Listen("tcp", fmt.Sprintf("%s:%s", config.ListenHost, config.ListenPort))
 	if err != nil {
 		log.Panic().Err(err).Msg("failed to listen")
 	}
