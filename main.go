@@ -20,8 +20,6 @@ func main() {
 		log.Panic().Err(err).Msg("error loading config")
 	}
 
-	// host := "localhost"
-	// port := 50051
 	log.Info().Msgf("listening on %d", config.ListenPort)
 	listener, err := net.Listen("tcp", fmt.Sprintf("%s:%s", config.ListenHost, config.ListenPort))
 	if err != nil {
@@ -34,7 +32,6 @@ func main() {
 			log.Panic().Err(err).Msg("failed to serve")
 		}
 	}()
-
 	// wait for ctrl+c
 	ch := make(chan os.Signal, 1)
 	signal.Notify(ch, os.Interrupt)
